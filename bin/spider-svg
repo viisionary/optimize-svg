@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+const commander = require('commander');
+const program = new commander.Command()
+const {resolve} = require('path')
+const chalk = require('chalk');
+const {version} = require(resolve(__dirname, '../package.json'))
+const {dealSvgDir} = require("../src/dealSvgDir");
+const {setId} = require("../src/translateByNet");
+const {delay} = require("../src/optimizeSvg");
+program.version(version).option('-v, --version', 'show spider-svg cli version')
+program
+    .description('优化svg')
+    .arguments('<project-directory>')
+    .usage(`${chalk.green('<project-directory>')} [options]`)
+    .option('-i, --appid <appid>', '百度翻译的app id、请注册后获取')
+    .option('-k, --key <appkey>', '百度翻译的app key、请注册后获取')
+    .action(async (dir, {appid, key}) => {
+        try {
+            console.log('3s后该目录下的源文件将被修改，请做好备份！')
+            console.dir(dir)
+            await delay(3000)
+            setId({
+                appid, key
+            })
+            console.log('正在修改文件...')
+            await dealSvgDir(dir);
+            console.log('成功')
+        } catch (e) {
+            console.error(e)
+        }
+    })
+program.parse();
