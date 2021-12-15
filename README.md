@@ -6,7 +6,7 @@ npm install spider-optimize-svg -g
 
 npm install spider-optimize-svg --save-dev
 ```
-##运行
+## 运行
 ```shell
 spider-svg ./svg -i appid -k appkey
 # 使用了百度翻译，请注册后获取
